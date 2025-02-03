@@ -1,10 +1,18 @@
 #let p = plugin("./rust.wasm")
 
-#let print(m) = {
-  assert(("matrix" in m), message: "Invalid input")
-  let command = json.decode(str(p.to_mat(bytes(json.encode(m))))).command
+#let print(m, truncate: (0, 0)) = {
+  assert((
+    truncate.at(0) >= 0
+    and truncate.at(1) >= 0
+    and truncate.at(0) != 1
+    and truncate.at(1) != 1
+    and truncate.at(0) < m.at("matrix").at(1)
+    and truncate.at(1) < m.at("matrix").at(2)
+  ), message: "Invalid truncate parameter")
+  let command = json.decode(str(p.to_mat(bytes(json.encode((..m, truncate: truncate)))))).command
   eval(command, mode: "math")
 }
+#let p = print
 
 #let create(m) = {
   let wasm_result

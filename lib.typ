@@ -73,3 +73,12 @@
     ..decoded_json
   )
 }
+
+#let transpose(m) = {
+  let wasm_result = wasm_plugin.transpose(bytes(json.encode((matrix: m.matrix))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}

@@ -37,3 +37,8 @@ pub fn multiply(arg: &[u8]) -> Vec<u8> {
 pub fn modify(arg: &[u8]) -> Vec<u8> {
     matrix_operations::modify(arg)
 }
+
+#[wasm_func]
+pub fn transpose(arg: &[u8]) -> Vec<u8> {
+    matrix_operations::transpose(arg)
+}

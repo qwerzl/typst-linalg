@@ -3,6 +3,17 @@ use serde_json::{from_slice, to_vec};
 
 use super::super::types::DefaultMatrix;
 
+/*
+  The following functions are used to perform +/-/product.
+  The input is a JSON object with the following structure:
+  {
+    "matrices": [matrix1, matrix2, ...]
+  }
+  The output is a JSON object with the following structure:
+  {
+    "matrix": result
+  }
+*/
 #[derive(Serialize, Deserialize, Debug)]
 struct Input {
   matrices: Vec<DefaultMatrix>,
@@ -44,6 +55,17 @@ pub fn multiply(arg: &[u8]) -> Vec<u8> {
   to_vec(&result).unwrap()
 }
 
+/*
+  Modifies a matrix at a specific location
+
+  Input:
+    matrix: DefaultMatrix - matrix to modify
+    location: (usize, usize) - location to modify
+    value: f64 - value to set at the location
+  
+  Output:
+    matrix: DefaultMatrix - modified matrix
+*/
 #[derive(Serialize, Deserialize, Debug)]
 struct ModifyInput {
   matrix: DefaultMatrix,
@@ -57,5 +79,27 @@ pub fn modify(arg: &[u8]) -> Vec<u8> {
   let mut matrix = input.matrix.clone();
   matrix[input.location] = input.value;
   let result = Output { matrix };
+  to_vec(&result).unwrap()
+}
+
+/*
+  Transposes a matrix
+
+  Input:
+    matrix: DefaultMatrix - matrix to transpose
+  
+  Output:
+    matrix
+*/
+
+#[derive(Serialize, Deserialize, Debug)]
+struct TransposeInput {
+  matrix: DefaultMatrix,
+}
+
+pub fn transpose(arg: &[u8]) -> Vec<u8> {
+  let input: TransposeInput = from_slice(arg).unwrap();
+
+  let result = Output { matrix: input.matrix.transpose() };
   to_vec(&result).unwrap()
 }

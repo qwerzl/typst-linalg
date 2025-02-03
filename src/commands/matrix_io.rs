@@ -47,12 +47,19 @@ pub fn create_matrix(arg: &[u8]) -> Vec<u8> {
 struct ToMatInput {
   matrix: DefaultMatrix,
 
-  #[serde(default = "default_elipsis")]
-  truncate: (usize, usize),
+  #[serde(default = "default_truncate")]
+  truncate: (isize, isize),
+
+  #[serde(default = "default_precision")]
+  precision: isize,
 }
 
-fn default_elipsis() -> (usize, usize) {
-  (0, 0)
+fn default_truncate() -> (isize, isize) {
+  (-1, -1)
+}
+
+fn default_precision() -> isize {
+  6
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -68,14 +75,14 @@ pub fn to_mat(arg: &[u8]) -> Vec<u8> {
   let mut is_truncated = (false, false);
   {
     if input.truncate.0 > 0 {
-      let d = input.truncate.0 - 1;
-      let i = matrix.nrows() - input.truncate.0;
+      let d = (input.truncate.0 - 1) as usize;
+      let i = matrix.nrows() - input.truncate.0 as usize;
       matrix = matrix.remove_rows(d, i);
       is_truncated.0 = true;
     }
     if input.truncate.1 > 0 {
-      let d = input.truncate.1 - 1;
-      let i = matrix.ncols() - input.truncate.1;
+      let d = (input.truncate.1 - 1) as usize;
+      let i = matrix.ncols() - input.truncate.1 as usize;
       matrix = matrix.remove_columns(d, i);
       is_truncated.1 = true;
     }
@@ -86,9 +93,17 @@ pub fn to_mat(arg: &[u8]) -> Vec<u8> {
   {
     for i in 0..matrix.nrows() {
       for j in 0..matrix.ncols() {
-        command.push_str(clean_f64_trailing_pattern(
-          &matrix[(i, j)].to_string()
-        ).as_str());
+        if input.precision > -1 {
+          command.push_str(format!(
+            "{:.1$}",
+            &matrix[(i, j)].to_string(),
+            input.precision as usize
+          ).as_str());
+        } else {
+          command.push_str(clean_f64_trailing_pattern(
+            &matrix[(i, j)].to_string()
+          ).as_str());
+        }
         if j < matrix.ncols() - 1 {
             command.push_str(", ");
         }

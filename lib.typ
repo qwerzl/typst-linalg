@@ -1,6 +1,6 @@
 #let wasm_plugin = plugin("./rust.wasm")
 
-#let print(m, truncate: (0, 0)) = {
+#let print(m, truncate: (0, 0), precision: 6) = {
   assert((
     truncate.at(0) >= 0
     and truncate.at(1) >= 0
@@ -9,7 +9,9 @@
     and truncate.at(0) < m.at("matrix").at(1)
     and truncate.at(1) < m.at("matrix").at(2)
   ), message: "Invalid truncate parameter")
-  let command = json.decode(str(wasm_plugin.to_mat(bytes(json.encode((..m, truncate: truncate)))))).command
+  assert(precision >= -1, message: "Invalid precision")
+
+  let command = json.decode(str(wasm_plugin.to_mat(bytes(json.encode((..m, truncate: truncate, precision: precision)))))).command
   eval(command, mode: "math")
 }
 #let p = print
@@ -92,3 +94,7 @@
     ..decoded_json
   )
 }
+
+#let matrix1 = create(((1, 2, 3), (4, 5, 6)))
+#let matrix2 = sigmoid(matrix1)
+#print(matrix2, precision: 6)

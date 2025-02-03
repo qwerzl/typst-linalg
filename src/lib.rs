@@ -2,6 +2,7 @@ use commands::*;
 use wasm_minimal_protocol::*;
 
 mod types;
+mod utils;
 mod commands;
 
 extern crate nalgebra as na;

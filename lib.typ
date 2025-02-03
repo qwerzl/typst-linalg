@@ -85,6 +85,46 @@
   )
 }
 
+// * ---------- Matrix Scalar Operations
+#let add_scalar(m, scalar) = {
+  let wasm_result = wasm_plugin.add_scalar(bytes(json.encode((matrix: m.matrix, scalar: scalar))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}
+
+#let sub_scalar(m, scalar) = {
+  let wasm_result = wasm_plugin.sub_scalar(bytes(json.encode((matrix: m.matrix, scalar: scalar))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}
+#let subtract_scalar = sub_scalar
+
+#let mul_scalar(m, scalar) = {
+  let wasm_result = wasm_plugin.multiply_scalar(bytes(json.encode((matrix: m.matrix, scalar: scalar))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}
+#let multiply_scalar = mul_scalar
+
+#let div_scalar(m, scalar) = {
+  let wasm_result = wasm_plugin.divide_scalar(bytes(json.encode((matrix: m.matrix, scalar: scalar))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}
+#let divide_scalar = div_scalar
+
 // * ---------- Matrix Apply Functions
 #let sigmoid(m) = {
   let wasm_result = wasm_plugin.apply_sigmoid(bytes(json.encode((matrix: m.matrix))))
@@ -94,7 +134,3 @@
     ..decoded_json
   )
 }
-
-#let matrix1 = create(((1, 2, 3), (4, 5, 6)))
-#let matrix2 = sigmoid(matrix1)
-#print(matrix2, precision: 6)

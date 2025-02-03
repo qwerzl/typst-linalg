@@ -44,6 +44,26 @@ pub fn transpose(arg: &[u8]) -> Vec<u8> {
     matrix_operations::transpose(arg)
 }
 
+#[wasm_func]
+pub fn add_scalar(arg: &[u8]) -> Vec<u8> {
+    matrix_operations_scalar::add_scalar(arg)
+}
+
+#[wasm_func]
+pub fn subtract_scalar(arg: &[u8]) -> Vec<u8> {
+    matrix_operations_scalar::subtract_scalar(arg)
+}
+
+#[wasm_func]
+pub fn multiply_scalar(arg: &[u8]) -> Vec<u8> {
+    matrix_operations_scalar::multiply_scalar(arg)
+}
+
+#[wasm_func]
+pub fn divide_scalar(arg: &[u8]) -> Vec<u8> {
+    matrix_operations_scalar::divide_scalar(arg)
+}
+
 // * Matrix Apply Functions
 #[wasm_func]
 pub fn apply_sigmoid(arg: &[u8]) -> Vec<u8> {

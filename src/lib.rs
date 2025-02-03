@@ -43,3 +43,9 @@ pub fn modify(arg: &[u8]) -> Vec<u8> {
 pub fn transpose(arg: &[u8]) -> Vec<u8> {
     matrix_operations::transpose(arg)
 }
+
+// * Matrix Apply Functions
+#[wasm_func]
+pub fn apply_sigmoid(arg: &[u8]) -> Vec<u8> {
+    matrix_apply::sigmoid::sigmoid(arg)
+}

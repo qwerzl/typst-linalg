@@ -82,3 +82,13 @@
     ..decoded_json
   )
 }
+
+// * ---------- Matrix Apply Functions
+#let sigmoid(m) = {
+  let wasm_result = wasm_plugin.apply_sigmoid(bytes(json.encode((matrix: m.matrix))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}

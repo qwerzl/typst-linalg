@@ -4,15 +4,12 @@ use serde_json::{from_slice, to_vec};
 use super::super::types::DefaultMatrix;
 
 /*
-  The following functions are used to perform +/-/product.
-  The input is a JSON object with the following structure:
-  {
-    "matrices": [matrix1, matrix2, ...]
-  }
-  The output is a JSON object with the following structure:
-  {
-    "matrix": result
-  }
+  +/-/x.
+
+  Input:
+    matrices: Vec<DefaultMatrix> - matrices to add/subtract/multiply
+  Output:
+    matrix: DefaultMatrix - result of the operation
 */
 #[derive(Serialize, Deserialize, Debug)]
 struct Input {

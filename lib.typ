@@ -45,7 +45,6 @@
     ..decoded_json
   )
 }
-#let sum = add
 
 #let subtract(..m) = {
   let wasm_result = wasm_plugin.subtract(bytes(json.encode((matrices: m.pos().map(x => x.matrix)))))

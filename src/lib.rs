@@ -35,6 +35,16 @@ pub fn multiply(arg: &[u8]) -> Vec<u8> {
 }
 
 #[wasm_func]
+pub fn component_multiply(arg: &[u8]) -> Vec<u8> {
+    matrix_operations::component_mul(arg)
+}
+
+#[wasm_func]
+pub fn component_division(arg: &[u8]) -> Vec<u8> {
+    matrix_operations::component_div(arg)
+}
+
+#[wasm_func]
 pub fn modify(arg: &[u8]) -> Vec<u8> {
     matrix_operations::modify(arg)
 }

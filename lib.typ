@@ -45,8 +45,9 @@
     ..decoded_json
   )
 }
+#let sum = add
 
-#let sub(..m) = {
+#let subtract(..m) = {
   let wasm_result = wasm_plugin.subtract(bytes(json.encode((matrices: m.pos().map(x => x.matrix)))))
   let decoded_json = json.decode(wasm_result)
   (
@@ -54,9 +55,9 @@
     ..decoded_json
   )
 }
-#let subtract = sub
+#let sub = subtract
 
-#let mul(..m) = {
+#let matmul(..m) = {
   let wasm_result = wasm_plugin.multiply(bytes(json.encode((matrices: m.pos().map(x => x.matrix)))))
   let decoded_json = json.decode(wasm_result)
   (
@@ -64,8 +65,28 @@
     ..decoded_json
   )
 }
-#let multiply = mul
-#let product = mul
+
+#let multiply(..m) = {
+  let wasm_result = wasm_plugin.component_multiply(bytes(json.encode((matrices: m.pos().map(x => x.matrix)))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}
+#let mul = multiply
+#let component_multiply = multiply
+
+#let divide(..m) = {
+  let wasm_result = wasm_plugin.component_division(bytes(json.encode((matrices: m.pos().map(x => x.matrix)))))
+  let decoded_json = json.decode(wasm_result)
+  (
+    p: print(decoded_json),
+    ..decoded_json
+  )
+}
+#let div = divide
+#let component_divide = divide
 
 #let modify(m, location, value) = {
   let wasm_result = wasm_plugin.modify(bytes(json.encode((matrix: m.matrix, location: location, value: value))))

@@ -4,7 +4,7 @@ use serde_json::{from_slice, to_vec};
 use super::super::types::DefaultMatrix;
 
 /*
-  +/-/x.
+  +/-/x/component{div, mul}.
 
   Input:
     matrices: Vec<DefaultMatrix> - matrices to add/subtract/multiply
@@ -46,6 +46,30 @@ pub fn multiply(arg: &[u8]) -> Vec<u8> {
   let mut res = input.matrices[0].clone();
   for m in input.matrices.iter().skip(1) {
     res *= m;
+  }
+
+  let result = Output { matrix: res };
+  to_vec(&result).unwrap()
+}
+
+pub fn component_mul(arg: &[u8]) -> Vec<u8> {
+  let input: Input = from_slice(arg).unwrap();
+
+  let mut res = input.matrices[0].clone();
+  for m in input.matrices.iter().skip(1) {
+    res.component_mul_assign(m);
+  }
+
+  let result = Output { matrix: res };
+  to_vec(&result).unwrap()
+}
+
+pub fn component_div(arg: &[u8]) -> Vec<u8> {
+  let input: Input = from_slice(arg).unwrap();
+
+  let mut res = input.matrices[0].clone();
+  for m in input.matrices.iter().skip(1) {
+    res.component_div_assign(m);
   }
 
   let result = Output { matrix: res };

@@ -209,6 +209,7 @@ dependencies = [
  "nalgebra",
  "once_cell",
  "regex",
+ "ryu",
  "serde",
  "serde_cbor",
  "serde_json",

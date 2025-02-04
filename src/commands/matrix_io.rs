@@ -2,7 +2,7 @@ use serde::{Serialize, Deserialize};
 use serde_json::{from_slice, to_vec};
 
 use super::super::types::DefaultMatrix;
-use super::super::utils::clean_f64_trailing_pattern;
+use super::super::utils::f64_to_string;
 
 /*
   Creates a matrix from a vector of f64 values
@@ -93,17 +93,11 @@ pub fn to_mat(arg: &[u8]) -> Vec<u8> {
   {
     for i in 0..matrix.nrows() {
       for j in 0..matrix.ncols() {
-        if input.precision > -1 {
-          command.push_str(format!(
-            "{:.1$}",
-            &matrix[(i, j)].to_string(),
-            input.precision as usize
-          ).as_str());
-        } else {
-          command.push_str(clean_f64_trailing_pattern(
-            &matrix[(i, j)].to_string()
-          ).as_str());
-        }
+
+        command.push_str(&f64_to_string(
+          matrix[(i, j)], input.precision
+        ));
+
         if j < matrix.ncols() - 1 {
             command.push_str(", ");
         }

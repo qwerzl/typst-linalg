@@ -1,6 +1,6 @@
 #let wasm_plugin = plugin("./rust.wasm")
 
-#let print(m, truncate: (0, 0), precision: 6) = {
+#let print(m, truncate: (0, 0), precision: 4) = {
   assert((
     truncate.at(0) >= 0
     and truncate.at(1) >= 0

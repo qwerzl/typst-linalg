@@ -1,12 +1,13 @@
 #let wasm_plugin = plugin("./rust.wasm")
 
+// * ---------- Utilities
 #let print(m, truncate: (0, 0), precision: 4) = {
   assert((
     truncate.at(0) >= 0
     and truncate.at(1) >= 0
     and truncate.at(0) != 1
     and truncate.at(1) != 1
-    and truncate.at(0) < m.at("matrix").at(1)
+    and (((m.at("matrix").at(1)) == none) or (truncate.at(0) < m.at("matrix").at(1)))
     and truncate.at(1) < m.at("matrix").at(2)
   ), message: "Invalid truncate parameter")
   assert(precision >= -1, message: "Invalid precision")
@@ -33,6 +34,25 @@
   (
     p: print(json_result),
     ..json_result
+  )
+}
+
+#let _create_from_nalgebra(m) = {
+  let dict = (
+    matrix: m
+  )
+
+  // none are returned by into_rows() or into_columns(), which is weird
+  if (m.at(1) == none) {
+    dict.at("matrix").at(1) = 1
+  }
+  if (m.at(2) == none) {
+    dict.at("matrix").at(2) = 1
+  }
+
+  (
+    p: print(dict),
+    ..dict
   )
 }
 
@@ -150,13 +170,13 @@
 #let into_rows(m) = {
   let wasm_result = wasm_plugin.into_rows(bytes(json.encode((matrix: m.matrix))))
   let decoded_json = json.decode(wasm_result)
-  decoded_json.at("matrices")
+  decoded_json.at("matrices").map(x => _create_from_nalgebra(x))
 }
 
 #let into_columns(m) = {
   let wasm_result = wasm_plugin.into_columns(bytes(json.encode((matrix: m.matrix))))
   let decoded_json = json.decode(wasm_result)
-  decoded_json.at("matrices")
+  decoded_json.at("matrices").map(x => _create_from_nalgebra(x))
 }
 
 // * ---------- Matrix Apply Functions

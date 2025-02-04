@@ -145,6 +145,20 @@
 }
 #let divide_scalar = div_scalar
 
+// * ---------- Matrix Views
+
+#let into_rows(m) = {
+  let wasm_result = wasm_plugin.into_rows(bytes(json.encode((matrix: m.matrix))))
+  let decoded_json = json.decode(wasm_result)
+  decoded_json.at("matrices")
+}
+
+#let into_columns(m) = {
+  let wasm_result = wasm_plugin.into_columns(bytes(json.encode((matrix: m.matrix))))
+  let decoded_json = json.decode(wasm_result)
+  decoded_json.at("matrices")
+}
+
 // * ---------- Matrix Apply Functions
 #let sigmoid(m) = {
   let wasm_result = wasm_plugin.apply_sigmoid(bytes(json.encode((matrix: m.matrix))))

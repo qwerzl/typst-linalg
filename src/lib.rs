@@ -74,6 +74,17 @@ pub fn divide_scalar(arg: &[u8]) -> Vec<u8> {
     matrix_operations_scalar::divide_scalar(arg)
 }
 
+// * Matrix Views
+#[wasm_func]
+pub fn into_rows(arg: &[u8]) -> Vec<u8> {
+    matrix_views::into_rows(arg)
+}
+
+#[wasm_func]
+pub fn into_columns(arg: &[u8]) -> Vec<u8> {
+    matrix_views::into_columns(arg)
+}
+
 // * Matrix Apply Functions
 #[wasm_func]
 pub fn apply_sigmoid(arg: &[u8]) -> Vec<u8> {
